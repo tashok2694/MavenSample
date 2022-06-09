@@ -1,0 +1,197 @@
+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
+package org.base;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.awt.AWTException;
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class BaseClass {
+	
+	 protected static WebDriver driver;
+	
+	public static WebDriver chromeBrowser() {
+	
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		return driver;
+
+	}
+	
+	public static void urlLaunch(String url) {
+		driver.get(url);
+		driver.manage().window().maximize();
+
+	}
+	
+	public  static void implicitWait(int e) {
+		driver.manage().timeouts().implicitlyWait(e, TimeUnit.SECONDS);
+
+	}
+	public static void sendKeys(WebElement e , String s) {
+		e.sendKeys(s);
+		
+
+	}
+	public static void click(WebElement c) {
+		c.click();
+
+	}
+	public static String getCurrent() {
+		String currentUrl = driver.getCurrentUrl();
+		return currentUrl;
+
+	}
+	public static String getTitle() {
+		String title = driver.getTitle();
+		return title;
+	
+
+	}
+	public static String getText(WebElement g) {
+		
+		String text = g.getText();
+		return text;
+	}
+	public static String getAttributes(WebElement g) {
+	String attribute = g.getAttribute("value");
+	return attribute;
+
+	}
+	
+	public static  void moveToElement(WebElement tar) {
+		Actions a=new Actions(driver);
+		a.moveToElement(tar);
+
+	}
+	public static void dragAndDrop(WebElement src ,WebElement tar) {
+		Actions a=new Actions(driver);
+		a.dragAndDrop(src, tar);
+		
+
+	}
+	public static void selectByIndex(WebElement w , int a) {
+		
+		Select s = new Select(w);
+		s.selectByIndex(a);
+	}
+	
+	public static void doubleClick(WebElement w) {
+		Actions a=new Actions(driver);
+		a.doubleClick(w).perform();
+
+	}
+	public static void rightClick(WebElement w) {
+		Actions a=new Actions(driver);
+		a.contextClick(w).perform();
+	}
+	public static void switchTo() {
+		Alert a=driver.switchTo().alert();
+		a.accept();
+
+	}
+	public static void confirmAlert() {
+		Alert a=driver.switchTo().alert();
+		a.dismiss();
+
+	}
+	
+	public static void selectByValue(WebElement w , String a) {
+		Select s = new Select(w);
+		s.selectByValue(a);
+
+	}
+	
+	public static void selectVisibleText(WebElement w , String a) {
+		Select s = new Select(w);
+		s.selectByVisibleText(a);
+		}
+	public static boolean multipleIs(WebElement w  ) {
+		Select s = new Select(w);
+		boolean multiple = s.isMultiple();
+		return multiple;
+		
+}
+	public static List<WebElement> getOption(WebElement w) {
+		Select s = new Select(w);
+		List<WebElement> options = s.getOptions();
+		return options;
+		}
+	public static WebElement getFirstSelect(WebElement w) {
+		Select s = new Select(w);
+		WebElement firstSelectedOption = s.getFirstSelectedOption();
+		return firstSelectedOption;
+}
+	public static List<WebElement> getAllSelect(WebElement w) {
+		Select s = new Select(w);
+		List<WebElement> allSelectedOptions = s.getAllSelectedOptions();
+		return allSelectedOptions;
+	}
+	public static void deSelect(WebElement w,int a,String b,String c) {
+		Select s = new Select(w);
+		s.deselectAll();
+		s.deselectByIndex(a);
+		s.deselectByValue(b);
+		s.deselectByVisibleText(c);
+
+	}
+	public static List<WebElement> enchancedFor(WebElement w) {
+		Select s = new Select(w);
+		List<WebElement> options = s.getOptions();
+		return options;
+	
+}
+	public static File takeScreenShot() throws IOException {
+		TakesScreenshot tk = (TakesScreenshot)driver;
+		File screenshotAs = tk.getScreenshotAs(OutputType.FILE);
+		long time = System.currentTimeMillis();
+		File des = new File("C:\\Users\\raj\\eclipse-workspace\\Selenium\\ScreenShot\\"+time+".png");
+		FileUtils.copyFile(screenshotAs, des);
+		return des;
+
+	}
+	public static JavascriptExecutor javaScriptSetter(WebElement w ,String value,String vl ) {
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		
+	js.executeScript("arguments[0].setAttribute('value','vl')", w);
+	return js;
+	
+	
+}
+	public static Object javaScriptGetter(WebElement w  ) {
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		Object executeScript = js.executeScript("arguments[0].getAttribute('value')", w);
+		return executeScript;
+
+	}
+	public static Set<String> windowsHandle(int a) {
+		Set<String> windowHandles = driver.getWindowHandles();
+		List<String> l = new LinkedList<>();
+		l.addAll(windowHandles);
+		driver.switchTo().window(l.get(a));
+		return windowHandles;
+	}
+	public static void frame(int t) {
+		
+		driver.switchTo().frame(t);
+
+	}
+	}
